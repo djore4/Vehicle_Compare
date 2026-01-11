@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Comparador de Viaturas</title>
     
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
             --primary: #017E84;
@@ -140,7 +142,8 @@
         </div>
 
         <div id="emptyState" class="empty-state">
-            Selecione viaturas acima para iniciar a comparação.
+            Selecione viaturas acima para iniciar a comparação.<br>
+            <small>Focada nos modelos mais populares em Portugal.</small>
         </div>
 
         <div class="comparison-wrapper" id="compWrapper" style="display:none;">
@@ -158,51 +161,63 @@
     </div>
 
     <script>
-        // --- 1. BASE DE DADOS "LOCAL" (Para testes imediatos) ---
-        // Futuramente, isto é substituído por uma chamada ao Supabase.
+        // --- BASE DE DADOS MEGA PACK (Focada em Frotas PT) ---
         const carDatabase = {
-            "BMW": {
-                "Série 1": [
-                    { version: "116d", fuel: "Diesel", power: "116 cv", cons: "4.6 L/100km", price: "34.000 €", gearbox: "Manual", img: "https://pngimg.com/d/bmw_PNG1702.png" },
-                    { version: "118i", fuel: "Gasolina", power: "140 cv", cons: "5.8 L/100km", price: "32.500 €", gearbox: "Auto", img: "https://pngimg.com/d/bmw_PNG1702.png" },
-                    { version: "120d xDrive", fuel: "Diesel", power: "190 cv", cons: "5.1 L/100km", price: "45.000 €", gearbox: "Auto", img: "https://pngimg.com/d/bmw_PNG1702.png" }
+            "Tesla": {
+                "Model 3 (2024)": [
+                    { version: "RWD (Standard)", fuel: "Elétrico", power: "283 cv", range: "513 km", price: "40.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" },
+                    { version: "Long Range AWD", fuel: "Elétrico", power: "498 cv", range: "629 km", price: "48.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
                 ],
-                "Série 3": [
-                    { version: "320e", fuel: "Híbrido Plug-in", power: "204 cv", cons: "1.8 L/100km", price: "52.000 €", gearbox: "Auto", img: "https://pngimg.com/d/bmw_PNG99539.png" },
-                    { version: "320d", fuel: "Diesel", power: "190 cv", cons: "4.9 L/100km", price: "54.000 €", gearbox: "Auto", img: "https://pngimg.com/d/bmw_PNG99539.png" }
+                "Model Y": [
+                    { version: "RWD", fuel: "Elétrico", power: "299 cv", range: "455 km", price: "44.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" },
+                    { version: "Long Range AWD", fuel: "Elétrico", power: "514 cv", range: "533 km", price: "53.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
+                ]
+            },
+            "BMW": {
+                "Série 3 (G20)": [
+                    { version: "330e (PHEV)", fuel: "Híbrido Plug-in", power: "292 cv", range: "60 km (EV)", price: "56.500 €", img: "https://pngimg.com/d/bmw_PNG99539.png" },
+                    { version: "320d", fuel: "Diesel", power: "190 cv", range: "-", price: "54.000 €", img: "https://pngimg.com/d/bmw_PNG99539.png" }
+                ],
+                "i4": [
+                    { version: "eDrive35", fuel: "Elétrico", power: "286 cv", range: "483 km", price: "57.000 €", img: "https://di-uploads-pod10.dealerinspire.com/bmwofmurray/uploads/2021/11/2022-BMW-i4-M50-frozen-portimao-blue-metallic-side-view.png" },
+                    { version: "eDrive40", fuel: "Elétrico", power: "340 cv", range: "590 km", price: "62.000 €", img: "https://di-uploads-pod10.dealerinspire.com/bmwofmurray/uploads/2021/11/2022-BMW-i4-M50-frozen-portimao-blue-metallic-side-view.png" }
+                ],
+                "X1 (U11)": [
+                    { version: "xDrive25e (PHEV)", fuel: "Híbrido Plug-in", power: "245 cv", range: "80 km (EV)", price: "49.000 €", img: "https://www.pngmart.com/files/22/BMW-X1-PNG-Image.png" }
                 ]
             },
             "Mercedes-Benz": {
-                "Classe A": [
-                    { version: "A 180d", fuel: "Diesel", power: "116 cv", cons: "4.5 L/100km", price: "35.000 €", gearbox: "Auto", img: "https://upload.wikimedia.org/wikipedia/commons/f/f7/2018_Mercedes-Benz_A200_AMG_Line_Premium_Automatic_1.3_Front.jpg" },
-                    { version: "A 250e", fuel: "Híbrido Plug-in", power: "218 cv", cons: "1.3 L/100km", price: "42.000 €", gearbox: "Auto", img: "https://upload.wikimedia.org/wikipedia/commons/f/f7/2018_Mercedes-Benz_A200_AMG_Line_Premium_Automatic_1.3_Front.jpg" }
-                ],
                 "Classe C": [
-                    { version: "C 220d", fuel: "Diesel", power: "200 cv", cons: "5.1 L/100km", price: "58.000 €", gearbox: "Auto", img: "https://pngimg.com/d/mercedes_PNG80136.png" }
+                    { version: "C 300e (PHEV)", fuel: "Híbrido Plug-in", power: "313 cv", range: "110 km (EV)", price: "60.000 €", img: "https://pngimg.com/d/mercedes_PNG80136.png" },
+                    { version: "C 220d", fuel: "Diesel", power: "200 cv", range: "-", price: "58.000 €", img: "https://pngimg.com/d/mercedes_PNG80136.png" }
+                ],
+                "GLC": [
+                    { version: "300de (PHEV Diesel)", fuel: "Híbrido Plug-in", power: "335 cv", range: "120 km (EV)", price: "75.000 €", img: "https://freepngimg.com/thumb/car/7-2-car-png-picture.png" }
+                ]
+            },
+            "Volvo": {
+                "EX30": [
+                    { version: "Single Motor", fuel: "Elétrico", power: "272 cv", range: "344 km", price: "37.900 €", img: "https://www.volvocars.com/images/v/-/media/project/contentplatform/data/media/my24/ex30/ex30-electric-suv.png" },
+                    { version: "Single Motor Ext.", fuel: "Elétrico", power: "272 cv", range: "480 km", price: "43.500 €", img: "https://www.volvocars.com/images/v/-/media/project/contentplatform/data/media/my24/ex30/ex30-electric-suv.png" }
+                ],
+                "XC60": [
+                    { version: "Recharge T6", fuel: "Híbrido Plug-in", power: "350 cv", range: "78 km (EV)", price: "65.000 €", img: "https://www.pngmart.com/files/22/Volvo-XC60-PNG-Clipart.png" }
+                ]
+            },
+            "BYD": {
+                "Seal": [
+                    { version: "Design RWD", fuel: "Elétrico", power: "313 cv", range: "570 km", price: "46.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/seal/seal-blue.png" }
+                ],
+                "Atto 3": [
+                    { version: "Comfort", fuel: "Elétrico", power: "204 cv", range: "420 km", price: "41.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/atto-3/atto-3-blue.png" }
                 ]
             },
             "Peugeot": {
-                "208": [
-                    { version: "Active 1.2", fuel: "Gasolina", power: "75 cv", cons: "5.4 L/100km", price: "19.000 €", gearbox: "Manual", img: "https://purepng.com/public/uploads/large/purepng.com-peugeot-208-red-carcarpeugeotvehicletransport-96152466632616y7w.png" },
-                    { version: "e-208 GT", fuel: "Elétrico", power: "136 cv", cons: "16 kWh/100km", price: "33.000 €", gearbox: "Auto", img: "https://purepng.com/public/uploads/large/purepng.com-peugeot-208-red-carcarpeugeotvehicletransport-96152466632616y7w.png" }
+                "308": [
+                    { version: "Hybrid 180", fuel: "Híbrido Plug-in", power: "180 cv", range: "60 km (EV)", price: "41.000 €", img: "https://pngimg.com/d/peugeot_PNG27.png" }
                 ],
-                "3008": [
-                    { version: "Hybrid 136", fuel: "Híbrido", power: "136 cv", cons: "5.0 L/100km", price: "36.000 €", gearbox: "Auto", img: "https://p7.hiclipart.com/preview/203/699/649/peugeot-3008-car-sport-utility-vehicle-peugeot-5008-peugeot.jpg" }
-                ]
-            },
-            "Tesla": {
-                "Model 3": [
-                    { version: "RWD (Highland)", fuel: "Elétrico", power: "283 cv", cons: "14 kWh/100km", price: "40.990 €", gearbox: "Auto", img: "https://pngimg.com/d/tesla_car_PNG42.png" },
-                    { version: "Long Range", fuel: "Elétrico", power: "498 cv", cons: "16 kWh/100km", price: "49.990 €", gearbox: "Auto", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
-                ],
-                "Model Y": [
-                    { version: "RWD", fuel: "Elétrico", power: "299 cv", cons: "15.7 kWh/100km", price: "44.990 €", gearbox: "Auto", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
-                ]
-            },
-            "Renault": {
-                "Clio": [
-                    { version: "TCe 90", fuel: "Gasolina", power: "90 cv", cons: "5.2 L/100km", price: "18.500 €", gearbox: "Manual", img: "https://pngimg.com/d/renault_clio_PNG15.png" },
-                    { version: "E-Tech 145", fuel: "Híbrido", power: "145 cv", cons: "4.2 L/100km", price: "24.000 €", gearbox: "Auto", img: "https://pngimg.com/d/renault_clio_PNG15.png" }
+                "e-208": [
+                    { version: "GT", fuel: "Elétrico", power: "156 cv", range: "400 km", price: "34.000 €", img: "https://purepng.com/public/uploads/large/purepng.com-peugeot-208-red-carcarpeugeotvehicletransport-96152466632616y7w.png" }
                 ]
             }
         };
@@ -212,30 +227,27 @@
         
         // Mapeamento das caracteristicas para a tabela
         const specLabels = {
-            'Preço Base': 'price',
+            'Preço (Indicativo)': 'price',
             'Combustível': 'fuel',
             'Potência': 'power',
-            'Caixa': 'gearbox',
-            'Consumo': 'cons'
+            'Autonomia': 'range'
         };
 
         // 1. INICIALIZAR MARCAS
         function init() {
             const selMake = document.getElementById('sel_make');
-            // Ordenar alfabeticamente as marcas
             Object.keys(carDatabase).sort().forEach(make => {
                 selMake.add(new Option(make, make));
             });
         }
 
-        // 2. CARREGAR MODELOS (Ao escolher Marca)
+        // 2. CARREGAR MODELOS
         function loadModels() {
             const make = document.getElementById('sel_make').value;
             const selModel = document.getElementById('sel_model');
             const selVer = document.getElementById('sel_version');
             const btn = document.getElementById('btnAdd');
 
-            // Resetar dropdowns seguintes
             selModel.innerHTML = '<option value="">-- Selecione --</option>';
             selVer.innerHTML = '<option value="">-- --</option>';
             selModel.disabled = true;
@@ -250,7 +262,7 @@
             }
         }
 
-        // 3. CARREGAR VERSÕES (Ao escolher Modelo)
+        // 3. CARREGAR VERSÕES
         function loadVersions() {
             const make = document.getElementById('sel_make').value;
             const model = document.getElementById('sel_model').value;
@@ -263,7 +275,6 @@
 
             if (make && model && carDatabase[make][model]) {
                 carDatabase[make][model].forEach((carObj, index) => {
-                    // Usamos o index do array como valor para ser fácil recuperar os dados
                     selVer.add(new Option(carObj.version, index));
                 });
                 selVer.disabled = false;
@@ -287,13 +298,12 @@
             if (make && model && verIdx !== "") {
                 const data = carDatabase[make][model][verIdx];
                 
-                // Construir objeto único
                 const car = {
-                    uniqueId: Date.now(), // ID para poder remover
+                    uniqueId: Date.now(),
                     make: make,
                     model: model,
                     version: data.version,
-                    specs: data, // Todos os dados técnicos
+                    specs: data,
                     img: data.img
                 };
 
@@ -325,18 +335,17 @@
             const headerRow = document.getElementById('row-header');
             const tbody = document.getElementById('compBody');
 
-            // Limpar tabela atual (mas manter a primeira coluna de labels)
             while (headerRow.children.length > 1) { headerRow.removeChild(headerRow.lastChild); }
             tbody.innerHTML = '';
 
-            // Construir Cabeçalhos (Colunas dos Carros)
+            // Header
             selectedCars.forEach(car => {
                 const th = document.createElement('th');
                 th.className = 'col-car';
                 th.innerHTML = `
                     <button class="btn-remove" onclick="removeCar(${car.uniqueId})">✕</button>
                     <div class="car-header">
-                        <img src="${car.img}" alt="${car.model}">
+                        <img src="${car.img}" alt="${car.model}" onerror="this.src='https://via.placeholder.com/200x100?text=Sem+Imagem'">
                         <div class="car-brand">${car.make}</div>
                         <span class="car-model">${car.model}</span>
                         <span class="car-version">${car.version}</span>
@@ -345,23 +354,19 @@
                 headerRow.appendChild(th);
             });
 
-            // Construir Linhas de Especificações
+            // Specs
             Object.keys(specLabels).forEach(label => {
-                const propKey = specLabels[label]; // ex: 'price'
+                const propKey = specLabels[label];
                 const tr = document.createElement('tr');
                 
-                // Label (1ª Coluna)
                 const tdLabel = document.createElement('td');
                 tdLabel.className = 'col-label';
                 tdLabel.innerText = label;
                 tr.appendChild(tdLabel);
 
-                // Valores das Viaturas (Colunas seguintes)
                 selectedCars.forEach(car => {
                     const tdVal = document.createElement('td');
                     tdVal.innerText = car.specs[propKey] || '-';
-                    
-                    // Destaque visual no preço
                     if (propKey === 'price') {
                         tdVal.style.fontWeight = 'bold';
                         tdVal.style.color = 'var(--primary)';
