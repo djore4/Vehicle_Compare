@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Comparador de Viaturas</title>
+    <title>Comparador de Viaturas (Pro)</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -20,7 +20,6 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { margin: 0; background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
 
-        /* HEADER */
         header { 
             background: var(--primary); padding: 15px; color: white; 
             display: flex; align-items: center; justify-content: space-between;
@@ -32,70 +31,39 @@
             padding: 5px 10px; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; 
         }
 
-        /* CONTAINER */
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .container { max-width: 1400px; margin: 20px auto; padding: 0 15px; }
 
-        /* PAINEL DE ESCOLHA (CASCATA) */
+        /* SELETOR */
         .selector-card { 
             background: var(--white); padding: 20px; border-radius: 8px; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;
         }
-        
-        .cascade-row { 
-            display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; 
-        }
-        
+        .cascade-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
         .select-group { flex: 1; min-width: 140px; }
         .select-group label { display: block; font-size: 0.75rem; font-weight: bold; color: #666; margin-bottom: 5px; text-transform: uppercase; }
         
-        select { 
-            width: 100%; padding: 10px; border: 1px solid var(--border); 
-            border-radius: 6px; font-size: 0.95rem; height: 42px; background: #fff; 
-        }
-        
+        select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; height: 42px; background: #fff; }
         .btn-add { 
-            background: var(--primary); color: white; border: none; 
-            padding: 0 25px; height: 42px; border-radius: 6px; 
-            font-weight: bold; cursor: pointer; min-width: 120px;
-            transition: 0.2s;
+            background: var(--primary); color: white; border: none; padding: 0 25px; height: 42px; border-radius: 6px; 
+            font-weight: bold; cursor: pointer; min-width: 120px; transition: 0.2s;
         }
         .btn-add:disabled { background: #ccc; cursor: not-allowed; }
-        .btn-add:active { transform: scale(0.98); }
 
-        /* TABELA COMPARATIVA */
+        /* TABELA */
         .comparison-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 800px; }
+        th, td { padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.9rem; }
         
-        th, td { 
-            padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border); 
-            vertical-align: middle; font-size: 0.9rem; 
-        }
+        .col-label { width: 140px; text-align: left; background: #f8f9fa; font-weight: 700; color: #555; border-right: 2px solid var(--border); position: sticky; left: 0; z-index: 10; }
+        .col-car { min-width: 180px; position: relative; background: white; }
         
-        /* Coluna das Etiquetas (Sticky Esquerda) */
-        .col-label { 
-            width: 140px; text-align: left; background: #f8f9fa; font-weight: 700; 
-            color: #555; border-right: 2px solid var(--border); 
-            position: sticky; left: 0; z-index: 10; 
-        }
-        
-        /* Colunas dos Carros */
-        .col-car { min-width: 200px; position: relative; background: white; }
-        
-        /* Cabeçalho do Carro */
-        .car-header { padding-top: 15px; }
         .car-header img { width: 100%; height: 110px; object-fit: contain; margin-bottom: 8px; }
         .car-brand { font-size: 0.75rem; text-transform: uppercase; color: #888; letter-spacing: 1px; }
         .car-model { font-weight: 800; color: var(--primary); font-size: 1.1rem; display: block; line-height: 1.2; }
         .car-version { font-size: 0.8rem; color: #444; background: #eee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;}
         
-        .btn-remove { 
-            position: absolute; top: 5px; right: 5px; 
-            background: transparent; color: #999; border: none; 
-            font-size: 1.2rem; cursor: pointer; 
-        }
+        .btn-remove { position: absolute; top: 5px; right: 5px; background: transparent; color: #999; border: none; font-size: 1.2rem; cursor: pointer; }
         .btn-remove:hover { color: var(--danger); }
-
-        /* Estado Vazio */
         .empty-state { text-align: center; padding: 40px 20px; color: #999; border: 2px dashed #ddd; border-radius: 8px; background: #fff; }
 
         @media (max-width: 768px) {
@@ -103,7 +71,6 @@
             .btn-add { width: 100%; margin-top: 5px; }
             .col-label { width: 110px; font-size: 0.8rem; padding: 10px; }
             .col-car { min-width: 160px; }
-            .car-header img { height: 90px; }
         }
     </style>
 </head>
@@ -111,320 +78,86 @@
 
     <header>
         <a href="index.html" class="back-btn">⬅ Voltar</a>
-        <h1>Comparador</h1>
+        <h1>Comparador de Frotas</h1>
         <div style="width:50px"></div>
     </header>
 
     <div class="container">
-        
         <div class="selector-card">
             <div class="cascade-row">
-                <div class="select-group">
-                    <label>1. Marca</label>
-                    <select id="sel_make" onchange="loadModels()">
-                        <option value="">-- Selecione --</option>
-                    </select>
-                </div>
-                <div class="select-group">
-                    <label>2. Modelo</label>
-                    <select id="sel_model" onchange="loadVersions()" disabled>
-                        <option value="">-- --</option>
-                    </select>
-                </div>
-                <div class="select-group">
-                    <label>3. Versão</label>
-                    <select id="sel_version" onchange="checkButton()" disabled>
-                        <option value="">-- --</option>
-                    </select>
-                </div>
+                <div class="select-group"><label>Marca</label><select id="sel_make" onchange="loadModels()"><option value="">-- Selecione --</option></select></div>
+                <div class="select-group"><label>Modelo</label><select id="sel_model" onchange="loadVersions()" disabled><option value="">-- --</option></select></div>
+                <div class="select-group"><label>Versão</label><select id="sel_version" onchange="checkButton()" disabled><option value="">-- --</option></select></div>
                 <button class="btn-add" onclick="addCar()" id="btnAdd" disabled>ADICIONAR</button>
             </div>
         </div>
 
         <div id="emptyState" class="empty-state">
-            Selecione viaturas acima para iniciar a comparação.<br>
-            <small>Focada nos principais modelos de frota em Portugal.</small>
+            Selecione viaturas acima. <br><small>Base de dados alargada: +25 Marcas, +150 Modelos (Portugal).</small>
         </div>
 
         <div class="comparison-wrapper" id="compWrapper" style="display:none;">
             <table id="compTable">
-                <thead>
-                    <tr id="row-header">
-                        <th class="col-label">Specs</th>
-                    </tr>
-                </thead>
+                <thead><tr id="row-header"><th class="col-label">Características</th></tr></thead>
                 <tbody id="compBody"></tbody>
             </table>
         </div>
-
     </div>
 
     <script>
-        // --- BASE DE DADOS MASSIVA (MERCADO PORTUGUÊS) ---
+        /* BASE DE DADOS MASSIVA - MERCADO PORTUGAL (FROTAS)
+           Preços indicativos (IVA incluído aprox), Autonomia WLTP.
+        */
         const carDatabase = {
-            "Tesla": {
-                "Model 3 (Highland)": [
-                    { version: "RWD", fuel: "Elétrico", power: "283 cv", range: "513 km", price: "40.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" },
-                    { version: "Long Range AWD", fuel: "Elétrico", power: "498 cv", range: "629 km", price: "48.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
+            "Audi": {
+                "A3 Sportback": [
+                    { version: "30 TFSI", fuel: "Gasolina", power: "110 cv", range: "-", price: "34.500 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/8yar/2021.png" },
+                    { version: "35 TDI S tronic", fuel: "Diesel", power: "150 cv", range: "-", price: "42.000 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/8yar/2021.png" },
+                    { version: "40 TFSIe (PHEV)", fuel: "Híbrido Plug-in", power: "204 cv", range: "65 km", price: "44.000 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/8yar/2021.png" }
                 ],
-                "Model Y": [
-                    { version: "RWD", fuel: "Elétrico", power: "299 cv", range: "455 km", price: "44.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" },
-                    { version: "Long Range AWD", fuel: "Elétrico", power: "514 cv", range: "533 km", price: "53.990 €", img: "https://pngimg.com/d/tesla_car_PNG42.png" }
+                "A4 Avant": [
+                    { version: "35 TDI S tronic", fuel: "Diesel", power: "163 cv", range: "-", price: "53.000 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/8wd/2020.png" }
+                ],
+                "Q4 e-tron": [
+                    { version: "45 e-tron", fuel: "Elétrico", power: "286 cv", range: "545 km", price: "59.500 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/f4b/2022.png" },
+                    { version: "55 e-tron Quattro", fuel: "Elétrico", power: "340 cv", range: "520 km", price: "68.000 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/f4b/2022.png" }
+                ],
+                "Q8 e-tron": [
+                    { version: "50 quattro", fuel: "Elétrico", power: "340 cv", range: "491 km", price: "79.000 €", img: "https://mediaservice.audi.com/media/live/50900/fly1400x601n1/geg/2023.png" }
                 ]
             },
             "BMW": {
+                "Série 1": [
+                    { version: "116d", fuel: "Diesel", power: "116 cv", range: "-", price: "34.000 €", img: "https://pngimg.com/d/bmw_PNG1702.png" },
+                    { version: "120d", fuel: "Diesel", power: "190 cv", range: "-", price: "46.000 €", img: "https://pngimg.com/d/bmw_PNG1702.png" }
+                ],
+                "Série 3 (G20)": [
+                    { version: "320d", fuel: "Diesel", power: "190 cv", range: "-", price: "54.000 €", img: "https://pngimg.com/d/bmw_PNG99539.png" },
+                    { version: "330e (PHEV)", fuel: "Híbrido Plug-in", power: "292 cv", range: "60 km", price: "56.500 €", img: "https://pngimg.com/d/bmw_PNG99539.png" }
+                ],
                 "i4": [
                     { version: "eDrive35", fuel: "Elétrico", power: "286 cv", range: "483 km", price: "57.000 €", img: "https://di-uploads-pod10.dealerinspire.com/bmwofmurray/uploads/2021/11/2022-BMW-i4-M50-frozen-portimao-blue-metallic-side-view.png" },
                     { version: "eDrive40", fuel: "Elétrico", power: "340 cv", range: "590 km", price: "62.000 €", img: "https://di-uploads-pod10.dealerinspire.com/bmwofmurray/uploads/2021/11/2022-BMW-i4-M50-frozen-portimao-blue-metallic-side-view.png" }
-                ],
-                "Série 3 (G20)": [
-                    { version: "330e (PHEV)", fuel: "Híbrido Plug-in", power: "292 cv", range: "60 km (EV)", price: "56.500 €", img: "https://pngimg.com/d/bmw_PNG99539.png" },
-                    { version: "320d", fuel: "Diesel", power: "190 cv", range: "-", price: "54.000 €", img: "https://pngimg.com/d/bmw_PNG99539.png" }
                 ],
                 "iX1": [
                     { version: "eDrive20", fuel: "Elétrico", power: "204 cv", range: "475 km", price: "49.000 €", img: "https://www.pngmart.com/files/22/BMW-X1-PNG-Image.png" },
                     { version: "xDrive30", fuel: "Elétrico", power: "313 cv", range: "439 km", price: "61.000 €", img: "https://www.pngmart.com/files/22/BMW-X1-PNG-Image.png" }
                 ],
-                "Série 1": [
-                    { version: "116d", fuel: "Diesel", power: "116 cv", range: "-", price: "34.000 €", img: "https://pngimg.com/d/bmw_PNG1702.png" }
-                ]
-            },
-            "Mercedes-Benz": {
-                "EQA": [
-                    { version: "250+", fuel: "Elétrico", power: "190 cv", range: "560 km", price: "58.000 €", img: "https://upload.wikimedia.org/wikipedia/commons/f/f7/2018_Mercedes-Benz_A200_AMG_Line_Premium_Automatic_1.3_Front.jpg" }
-                ],
-                "Classe C": [
-                    { version: "C 300e (PHEV)", fuel: "Híbrido Plug-in", power: "313 cv", range: "110 km (EV)", price: "60.000 €", img: "https://pngimg.com/d/mercedes_PNG80136.png" }
-                ],
-                "GLC": [
-                    { version: "300de (PHEV Diesel)", fuel: "Híbrido Plug-in", power: "335 cv", range: "120 km (EV)", price: "75.000 €", img: "https://freepngimg.com/thumb/car/7-2-car-png-picture.png" }
-                ]
-            },
-            "Volvo": {
-                "EX30": [
-                    { version: "Single Motor", fuel: "Elétrico", power: "272 cv", range: "344 km", price: "37.900 €", img: "https://www.volvocars.com/images/v/-/media/project/contentplatform/data/media/my24/ex30/ex30-electric-suv.png" },
-                    { version: "Single Motor Ext.", fuel: "Elétrico", power: "272 cv", range: "480 km", price: "43.500 €", img: "https://www.volvocars.com/images/v/-/media/project/contentplatform/data/media/my24/ex30/ex30-electric-suv.png" }
-                ],
-                "XC40 / EX40": [
-                    { version: "Recharge", fuel: "Elétrico", power: "238 cv", range: "476 km", price: "51.000 €", img: "https://www.pngmart.com/files/22/Volvo-XC60-PNG-Clipart.png" }
-                ],
-                "XC60": [
-                    { version: "T6 Recharge (PHEV)", fuel: "Híbrido Plug-in", power: "350 cv", range: "78 km (EV)", price: "68.000 €", img: "https://www.pngmart.com/files/22/Volvo-XC60-PNG-Clipart.png" }
+                "i5": [
+                    { version: "eDrive40", fuel: "Elétrico", power: "340 cv", range: "582 km", price: "77.000 €", img: "https://www.bmw.pt/content/dam/bmw/common/all-models/5-series/sedan/2023/highlights/bmw-5-series-sedan-i5-sp-desktop.jpg" }
                 ]
             },
             "BYD": {
-                "Seal": [
-                    { version: "Design RWD", fuel: "Elétrico", power: "313 cv", range: "570 km", price: "46.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/seal/seal-blue.png" },
-                    { version: "Excellence AWD", fuel: "Elétrico", power: "530 cv", range: "520 km", price: "48.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/seal/seal-blue.png" }
+                "Dolphin": [
+                    { version: "Active", fuel: "Elétrico", power: "95 cv", range: "340 km", price: "29.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/dolphin/dolphin-blue.png" },
+                    { version: "Comfort", fuel: "Elétrico", power: "204 cv", range: "427 km", price: "34.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/dolphin/dolphin-blue.png" }
                 ],
                 "Atto 3": [
                     { version: "Comfort", fuel: "Elétrico", power: "204 cv", range: "420 km", price: "41.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/atto-3/atto-3-blue.png" }
                 ],
-                "Dolphin": [
-                    { version: "Comfort", fuel: "Elétrico", power: "204 cv", range: "427 km", price: "34.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/dolphin/dolphin-blue.png" }
-                ]
-            },
-            "Peugeot": {
-                "e-208": [
-                    { version: "GT", fuel: "Elétrico", power: "156 cv", range: "400 km", price: "34.000 €", img: "https://purepng.com/public/uploads/large/purepng.com-peugeot-208-red-carcarpeugeotvehicletransport-96152466632616y7w.png" }
+                "Seal": [
+                    { version: "Design RWD", fuel: "Elétrico", power: "313 cv", range: "570 km", price: "46.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/seal/seal-blue.png" },
+                    { version: "Excellence AWD", fuel: "Elétrico", power: "530 cv", range: "520 km", price: "48.990 €", img: "https://www.byd.com/content/dam/byd-site-us/products/passenger-vehicles/seal/seal-blue.png" }
                 ],
-                "308": [
-                    { version: "Hybrid 180 (PHEV)", fuel: "Híbrido Plug-in", power: "180 cv", range: "60 km (EV)", price: "41.000 €", img: "https://pngimg.com/d/peugeot_PNG27.png" }
-                ],
-                "e-2008": [
-                    { version: "GT", fuel: "Elétrico", power: "156 cv", range: "406 km", price: "39.000 €", img: "https://pngimg.com/d/peugeot_PNG27.png" }
-                ]
-            },
-            "Renault": {
-                "Megane E-Tech": [
-                    { version: "EV60", fuel: "Elétrico", power: "220 cv", range: "450 km", price: "44.000 €", img: "https://www.pngmart.com/files/22/Renault-Megane-PNG-Isolated-Pic.png" }
-                ],
-                "Clio": [
-                    { version: "E-Tech 145 Full Hybrid", fuel: "Híbrido", power: "145 cv", range: "-", price: "24.000 €", img: "https://pngimg.com/d/renault_clio_PNG15.png" }
-                ]
-            },
-            "MG": {
-                "MG4": [
-                    { version: "Standard", fuel: "Elétrico", power: "170 cv", range: "350 km", price: "32.000 €", img: "https://www.mgmotor.eu/images/models/mg4/mg4-electric-orange.png" },
-                    { version: "Luxury", fuel: "Elétrico", power: "204 cv", range: "435 km", price: "37.000 €", img: "https://www.mgmotor.eu/images/models/mg4/mg4-electric-orange.png" }
-                ]
-            },
-            "Volkswagen": {
-                "ID.3": [
-                    { version: "Pro", fuel: "Elétrico", power: "204 cv", range: "426 km", price: "42.000 €", img: "https://pngimg.com/d/volkswagen_PNG107775.png" }
-                ],
-                "ID.4": [
-                    { version: "Pro", fuel: "Elétrico", power: "286 cv", range: "550 km", price: "48.000 €", img: "https://pngimg.com/d/volkswagen_PNG107775.png" }
-                ],
-                "ID.7": [
-                    { version: "Pro", fuel: "Elétrico", power: "286 cv", range: "621 km", price: "59.000 €", img: "https://pngimg.com/d/volkswagen_PNG107775.png" }
-                ]
-            },
-            "Hyundai": {
-                "Ioniq 5": [
-                    { version: "RWD 77kWh", fuel: "Elétrico", power: "229 cv", range: "507 km", price: "55.000 €", img: "https://www.pngmart.com/files/22/Hyundai-Ioniq-5-PNG-Transparent-Image.png" }
-                ],
-                "Kona": [
-                    { version: "EV Long Range", fuel: "Elétrico", power: "218 cv", range: "514 km", price: "46.500 €", img: "https://www.pngmart.com/files/22/Hyundai-Kona-PNG-Photo.png" }
-                ]
-            },
-            "Kia": {
-                "EV6": [
-                    { version: "Air", fuel: "Elétrico", power: "229 cv", range: "528 km", price: "54.000 €", img: "https://www.kia.com/content/dam/kia/us/en/vehicles/ev6/2023/gallery/exterior/2023-kia-ev6-yacht-blue-exterior-three-quarter-front-view.png" }
-                ],
-                "Niro EV": [
-                    { version: "Drive", fuel: "Elétrico", power: "204 cv", range: "460 km", price: "43.000 €", img: "https://www.kia.com/content/dam/kia/us/en/vehicles/niro-ev/2023/gallery/exterior/2023-kia-niro-ev-snow-white-pearl-exterior-three-quarter-front-view.png" }
-                ]
-            },
-            "Audi": {
-                "Q4 e-tron": [
-                    { version: "45", fuel: "Elétrico", power: "286 cv", range: "545 km", price: "59.000 €", img: "https://www.pngmart.com/files/22/Audi-Q4-e-tron-PNG-Isolated-HD.png" }
-                ]
-            }
-        };
-
-        // --- LÓGICA DE APLICAÇÃO ---
-        let selectedCars = []; 
-        const specLabels = {
-            'Preço (Est.)': 'price',
-            'Combustível': 'fuel',
-            'Potência': 'power',
-            'Autonomia': 'range'
-        };
-
-        function init() {
-            const selMake = document.getElementById('sel_make');
-            Object.keys(carDatabase).sort().forEach(make => {
-                selMake.add(new Option(make, make));
-            });
-        }
-
-        function loadModels() {
-            const make = document.getElementById('sel_make').value;
-            const selModel = document.getElementById('sel_model');
-            const selVer = document.getElementById('sel_version');
-            const btn = document.getElementById('btnAdd');
-
-            selModel.innerHTML = '<option value="">-- Selecione --</option>';
-            selVer.innerHTML = '<option value="">-- --</option>';
-            selModel.disabled = true;
-            selVer.disabled = true;
-            btn.disabled = true;
-
-            if (make && carDatabase[make]) {
-                Object.keys(carDatabase[make]).sort().forEach(model => {
-                    selModel.add(new Option(model, model));
-                });
-                selModel.disabled = false;
-            }
-        }
-
-        function loadVersions() {
-            const make = document.getElementById('sel_make').value;
-            const model = document.getElementById('sel_model').value;
-            const selVer = document.getElementById('sel_version');
-            const btn = document.getElementById('btnAdd');
-
-            selVer.innerHTML = '<option value="">-- Selecione --</option>';
-            selVer.disabled = true;
-            btn.disabled = true;
-
-            if (make && model && carDatabase[make][model]) {
-                carDatabase[make][model].forEach((carObj, index) => {
-                    selVer.add(new Option(carObj.version, index));
-                });
-                selVer.disabled = false;
-            }
-        }
-
-        function checkButton() {
-            const ver = document.getElementById('sel_version').value;
-            document.getElementById('btnAdd').disabled = (ver === "");
-        }
-
-        function addCar() {
-            if (selectedCars.length >= 4) return alert("Máximo de 4 viaturas para comparar.");
-
-            const make = document.getElementById('sel_make').value;
-            const model = document.getElementById('sel_model').value;
-            const verIdx = document.getElementById('sel_version').value;
-
-            if (make && model && verIdx !== "") {
-                const data = carDatabase[make][model][verIdx];
-                const car = {
-                    uniqueId: Date.now(),
-                    make: make,
-                    model: model,
-                    version: data.version,
-                    specs: data,
-                    img: data.img
-                };
-                selectedCars.push(car);
-                renderTable();
-            }
-        }
-
-        function removeCar(uniqueId) {
-            selectedCars = selectedCars.filter(c => c.uniqueId !== uniqueId);
-            renderTable();
-        }
-
-        function renderTable() {
-            const wrapper = document.getElementById('compWrapper');
-            const empty = document.getElementById('emptyState');
-
-            if (selectedCars.length === 0) {
-                wrapper.style.display = 'none';
-                empty.style.display = 'block';
-                return;
-            } else {
-                wrapper.style.display = 'block';
-                empty.style.display = 'none';
-            }
-
-            const headerRow = document.getElementById('row-header');
-            const tbody = document.getElementById('compBody');
-
-            while (headerRow.children.length > 1) { headerRow.removeChild(headerRow.lastChild); }
-            tbody.innerHTML = '';
-
-            selectedCars.forEach(car => {
-                const th = document.createElement('th');
-                th.className = 'col-car';
-                th.innerHTML = `
-                    <button class="btn-remove" onclick="removeCar(${car.uniqueId})">✕</button>
-                    <div class="car-header">
-                        <img src="${car.img}" alt="${car.model}" onerror="this.src='https://via.placeholder.com/200x100?text=Sem+Imagem'">
-                        <div class="car-brand">${car.make}</div>
-                        <span class="car-model">${car.model}</span>
-                        <span class="car-version">${car.version}</span>
-                    </div>
-                `;
-                headerRow.appendChild(th);
-            });
-
-            Object.keys(specLabels).forEach(label => {
-                const propKey = specLabels[label];
-                const tr = document.createElement('tr');
-                const tdLabel = document.createElement('td');
-                tdLabel.className = 'col-label';
-                tdLabel.innerText = label;
-                tr.appendChild(tdLabel);
-
-                selectedCars.forEach(car => {
-                    const tdVal = document.createElement('td');
-                    tdVal.innerText = car.specs[propKey] || '-';
-                    if (propKey === 'price') {
-                        tdVal.style.fontWeight = 'bold';
-                        tdVal.style.color = 'var(--primary)';
-                    }
-                    tr.appendChild(tdVal);
-                });
-                tbody.appendChild(tr);
-            });
-        }
-
-        init();
-    </script>
-</body>
-</html>
+                "Tang": [
+                    { version: "AWD Flagship", fuel: "Elétrico",
